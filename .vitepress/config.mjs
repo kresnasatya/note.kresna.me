@@ -28,7 +28,7 @@ export default defineConfig({
         text: 'Go',
         collapsed: false,
         items: [
-          { text: 'Introduction', link: '/go/introduction' },
+          { text: 'Introduction', link: '/go' },
           { text: 'Hello World', link: '/go/fundamentals/hello-world' },
           { text: 'Integers', link: '/go/fundamentals/integers' },
           { text: 'Iteration', link: '/go/fundamentals/iteration' },
