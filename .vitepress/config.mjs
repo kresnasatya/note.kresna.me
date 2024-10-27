@@ -33,6 +33,10 @@ export default defineConfig({
           { text: 'Integers', link: '/go/fundamentals/integers' },
           { text: 'Iteration', link: '/go/fundamentals/iteration' },
         ]
+      },
+      {
+        text: 'PHP',
+        link: '/php'
       }
     ],
 
