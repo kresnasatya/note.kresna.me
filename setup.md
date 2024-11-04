@@ -49,10 +49,27 @@ Kresna Satya's personal setup on Computer.
 
 ## Windows
 
-### WSL2
-> This step below is a fresh install of WSL2. So, any distro will be uninstall.
+First of all, please install [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701) on Microsoft Store in order to make it easier to manage terminal between environment Windows and WSL itself.
 
-```bash
+### WSL2
+
+This step below is a WSL2 fresh install of WSL2. Open Windows Shell and run as administrator.
+
+```sh
+wsl --install -d Ubuntu
+```
+
+After Ubuntu distro downloaded, you must restart your computer to make it works properly.
+
+Next, open Windows Terminal then choose option for Ubuntu terminal (?). For the first time, the Ubuntu will set an update then there will be a prompt to set username and password.
+
+> Usually, I set the password same with the username. 😅
+
+Next, run `sudo apt update && sudo apt full-upgrade`
+
+Additional information.
+
+```sh
 # To get list of distro
 wsl -l -v
 # Shutdown WSL
@@ -60,14 +77,6 @@ wsl --shutdown
 # Unregister the distro
 wsl --unregister Ubuntu
 # Close the terminal and open again
-
-# Install the distro
-wsl --install -d Ubuntu
-
-# There will be a prompt to set username and password
-# Usually, I set the password same with the username
-
-# Next run `sudo apt update && sudo apt full-upgrade`
 ```
 
 **Reference**
@@ -83,32 +92,52 @@ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install
 
 #### Homebrew {#homebrew-wsl2}
 
-```bash
+```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-# After install then add Homebrew to the PATH
+```
+
+After download, then add Homebrew to the PATH.
+
+```sh
 (echo; echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"') >> /home/usdidev/.zshrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-# Install Homebrew's dependencies
+```
+
+Next, install Homebrew's dependencies.
+
+```bash
 sudo apt-get install -y build-essential
 ```
 
-Install PHP, Composer, Volta, and PNPM
+Install PHP, Composer, Volta, and PNPM.
 
-```bash
+```sh
 brew install volta php composer
-# Install NodeJS and PNPM
+```
+
+Install NodeJS and PNPM with Volta.
+
+```sh
 volta install node pnpm
 ```
 
 #### MySQL Server
 
-Install MySQL Version 8 and Reset Password with mysql_native_password
+Install MySQL Version 8 and Reset Password with mysql_native_password.
     
-```bash
+```sh
 sudo apt install -y mysql-server
-# start mysql server
+```
+
+Start MySQL server.
+
+```sh
 sudo /etc/init.d/mysql start
-# Run the script security then choose No option!
+```
+
+Run the script security then choose No option!
+
+```sh
 sudo mysql_secure_installation
 # Change root password with empty password since it's development mode
 sudo mysql
