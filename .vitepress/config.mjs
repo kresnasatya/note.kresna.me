@@ -25,12 +25,24 @@ export default defineConfig({
         link: '/programming'
       },
       {
+        text: 'Rendering on the Web',
+        link: '/rendering-on-the-web'
+      },
+      {
+        text: 'Cloudflare',
+        link: '/cloudflare'
+      },
+      {
         text: 'Git',
         link: '/git'
       },
       {
         text: 'PHP',
         link: '/php'
+      },
+      {
+        text: 'Swift',
+        link: '/swift'
       }
     ],
 
