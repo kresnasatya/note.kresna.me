@@ -30,8 +30,8 @@ php > echo 5+8;
 13
 php > function addTwo($n)
 php > {
-php { return $n + 2;
-php { }
+php > return $n + 2;
+php > }
 php > var_dump(addtwo(2));
 int(4)
 php >
@@ -257,7 +257,7 @@ Packagist is a central repository to store PHP package created with Composer. Th
 
 ## Frameworks
 
-> *We choose framework because it organized our mind and code program. Also make sure that framework is comfortable with our style*.
+> *We choose framework because it organized our mind and code program. Also, we choose specific framework because comfortable with our style*.
 
 I have use two PHP frameworks: CodeIgniter version 3 and Laravel. Maybe, I should add WordPress too because it's a framework for Content Management System (CMS). Usually, PHP frameworks adopts Model View Controller (MVC) design pattern. Model for query data to database, data transform (accessor and mutator). View to display data from Model. Controller as a bridge between Model and View.
 
@@ -267,7 +267,7 @@ Here are my habits I use when use Laravel framework.
 
 #### Interact with Complex Query
 
-Software in real-world is 80% mess and 20% is our idealism. There are case when I cannot use Eloquent Model from Laravel because of I confuse how to translate entity in English (naming is hard), query is complex (multiple join and nested join), and deadline. Luckily, Laravel shipped `DB::select()` in Query Builder. Here's the example.
+Software in real-world is 80% mess and 20% is our idealism. There is a case when I cannot use Eloquent Model from Laravel because of I confuse how to translate entity in English (naming is hard), query is complex (multiple join and nested join), and deadline. Luckily, Laravel shipped `DB::select()` in Query Builder. Here's the example.
 
 ```php
 // Get role and permission based on user_id
@@ -294,7 +294,7 @@ dd($result);
 
 #### Create PHP helpers inside Laravel
 
-Laravel News give tip how to create PHP helpers inside Laravel which is great. But, personally I don't like the approach, so I create my own style.
+[Laravel News give a tip how to create PHP helpers inside Laravel](https://laravel-news.com/creating-helpers). But, I don't like the approach from Laravel News. So, I create my own style.
 
 1.  Create `helpers` directory inside root project. Inside the helpers directory create a `index.php` file.
 
@@ -374,8 +374,7 @@ if (!function_exists('spell_numbers')) {
 // echo spell_number(0); => output "Nol"
 ```
 
-::: info QUESTION
-Do you have solution if `index.php` inside helpers bloated (more than 1000 lines)?
+::: details Do you have solution if `index.php` inside helpers bloated (more than 1000 lines)?
 
 We can use `require_once` keyword to solve this. Let say inside `index.php` helpers I see a lot of functions that used for date manipulation. So I move them into a file named `date.php` inside helpers directory.
 
@@ -398,7 +397,7 @@ require_once 'date.php';
 // ... the rest of functions remove for brevity.
 ```
 
-That's it! I don't need `composer dump-autoload`! Sweet!
+That's it! I don't need `composer dump-autoload` again! Sweet!
 :::
 
 ## Deployment
@@ -413,9 +412,9 @@ Make sure you generate SSH Private Key and SSH Known Hosts and store it into Git
 
 Put the `.env` content file inside the GitLab or GitHub variable. I create `PRO_DOTENV` variable name to store the `.env` content file.
 
-```php
-// deploy.php
+::: code-group
 
+```php [deploy.php]
 <?php
 namespace Deployer;
 
@@ -473,8 +472,7 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 ```
 
-```yml
-# .gitlab-ci.yml
+```yml [.gitlab-ci.yml]
 
 image: docker.io/ristekusdi/webapp-builder:8.1
 
@@ -527,11 +525,14 @@ pro-deployment:
         - php vendor/bin/dep --file=deploy.php deploy webapp.tld --revision="${CI_COMMIT_SHA}"
 ```
 
+:::
+
 #### Laravel
 
-```php
+::: code-group
+
+```php [deploy.php]
 <?php
-// deploy.php
 namespace Deployer;
 
 require 'recipe/laravel.php';
@@ -590,8 +591,7 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 ```
 
-```yml
-# .gitlab-ci.yml
+```yml [.gitlab-ci.yml]
 
 image: docker.io/ristekusdi/webapp-builder:8.1
 # Add a `.` in front of a job to make it hidden.
@@ -678,6 +678,8 @@ pro-deployment:
     only:
         - main
 ```
+
+:::
 
 ### Server Side Up Docker PHP
 
