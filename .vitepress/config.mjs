@@ -25,15 +25,8 @@ export default defineConfig({
         link: '/programming'
       },
       {
-        text: 'Go',
-        collapsed: false,
-        items: [
-          { text: 'Introduction', link: '/go' },
-          { text: 'Hello World', link: '/go/fundamentals/hello-world' },
-          { text: 'Integers', link: '/go/fundamentals/integers' },
-          { text: 'Iteration', link: '/go/fundamentals/iteration' },
-          { text: 'Arrays and slices', link: '/go/fundamentals/arrays-and-slices' },
-        ]
+        text: 'Git',
+        link: '/git'
       },
       {
         text: 'PHP',
