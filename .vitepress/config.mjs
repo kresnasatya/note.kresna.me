@@ -43,6 +43,10 @@ export default defineConfig({
       {
         text: 'Swift',
         link: '/swift'
+      },
+      {
+        text: 'Vite',
+        link: '/vite'
       }
     ],
 
