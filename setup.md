@@ -65,7 +65,11 @@ Next, open Windows Terminal then choose option for Ubuntu terminal (?). For the 
 
 > Usually, I set the password same with the username. 😅
 
-Next, run `sudo apt update && sudo apt full-upgrade`
+Next, update the Ubuntu distro.
+
+```sh
+sudo apt -y update && sudo apt -y full-upgrade
+```
 
 Additional information.
 
@@ -83,11 +87,20 @@ wsl --unregister Ubuntu
 
 [Install Ubuntu on WSL2 with GUI Support](https://ubuntu.com/tutorials/install-ubuntu-on-wsl2-on-windows-11-with-gui-support#1-overview)
 
-#### ZSH and Oh My Zsh
+#### Utilities
 
-```bash
-sudo apt install wget git zsh
+- Install ZSH.
+
+```sh
+sudo apt -y install wget git zsh
 sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+```
+
+- Install Net Tools to check IP on computer with `ifconfig` command.
+
+```sh
+sudo apt install -y net-tools
+ifconfig
 ```
 
 #### Homebrew {#homebrew-wsl2}
@@ -121,52 +134,99 @@ Install NodeJS and PNPM with Volta.
 volta install node pnpm
 ```
 
-#### MySQL Server
+#### MySQL
 
-Install MySQL Version 8 and Reset Password with mysql_native_password.
+I use MariaDB instead of MySQL server. MariaDB has same features like MySQL server.
     
 ```sh
-sudo apt install -y mysql-server
+sudo apt install -y mariadb-server
 ```
 
-Start MySQL server.
+Enable MariaDB and start MariaDB.
 
 ```sh
-sudo /etc/init.d/mysql start
+sudo systemctl enable mariadb
+sudo systemctl start mariadb
 ```
 
-Run the script security then choose No option!
+##### Secure MySQL
+
+> This is in development mode.
+
+Run the script below to secure MySQL.
 
 ```sh
 sudo mysql_secure_installation
-# Change root password with empty password since it's development mode
-sudo mysql
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-# Exit
-
-# Change port and allow access remotely with bind_address option
-sudo vi /etc/mysql/my.cnf
-# Add config below
-[mysqld]
-bind_address = 0.0.0.0
-port = 33061
-
-# Restart mysql server
-sudo service mysql restart
-
-# Related issue
-https://stackoverflow.com/questions/62987154/mysql-wont-start-error-su-warning-cannot-change-directory-to-nonexistent
-
-# Create root with access remote (can access mysql with IP Address of my computer)
-mysql -u root
-CREATE USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '';
-# Then grant all access to that user
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 ```
 
-**Reference**
+- Press `Enter` to select `none` as the current root password.
 
-[How to install MySQL on WSL 2 (Ubuntu)](https://pen-y-fan.github.io/2021/08/08/How-to-install-MySQL-on-WSL-2-Ubuntu/)
+```
+Enter current password for root (enter for none): 
+```
+
+- Enter `n` and press `Enter` to use MariaDB without unix_socket authentication.
+
+```
+Switch to unix_socket authentication [Y/n]
+```
+
+- Enter `y` and press `Enter` to change the default root user password.
+
+```
+Change the root password? [Y/n]
+```
+
+- Enter a new strong password for the root user. In this case I use password `Root@123`.
+
+```
+New password:
+```
+
+- Re-enter the new root user password and press `Enter` to save changes.
+
+```
+Re-enter new password: 
+```
+
+- Enter `n` and press `Enter` to not delete anonymous users on the MariaDB server.
+
+```
+Remove anonymous users? [Y/n]
+```
+
+- Enter `n` and press Enter to keep remote access to the database server root user.
+
+```
+Disallow root login remotely? [Y/n]
+```
+
+- Enter `n` and press Enter to keep test database.
+
+```
+Remove test database and access to it? [Y/n]
+```
+
+- Enter `y` to refresh your MariaDB privilege tables and apply your new configuration changes.
+
+```
+Reload privilege tables now? [Y/n]
+```
+
+Next, I use different port (33061) to access MariaDB. This will prevent conflict with MySQL in Laragon.
+
+Edit file `50-server.cnf` in `/etc/mysql/mariadb.conf.d/50-server.cnf` and add set port 33061.
+
+```
+[mysqld]
+port = 33061
+```
+
+Save it and restart MariaDB server.
+
+```
+sudo systemctl restart mariadb
+```
 
 #### Redis
 
@@ -175,21 +235,19 @@ curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyr
 
 echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
 
-sudo apt-get update
-sudo apt-get install redis
+sudo apt-get -y update
+sudo apt-get install -y redis
 ```
 
-To run Redis server and client use commands below.
+Enable and run Redis server and client use commands below.
 
 ```bash
-# First tab
-sudo service redis-server start
-# Second tab (make sure Redis server has started)
+sudo systemctl enable redis-server
 redis-cli
 # Test connection inside redis-cli with "ping" command
 ```
 
-I want to make Redis can be accessed with my computer IP Address.
+If I want to make Redis can be accessed with my computer IP address then I need to change the redis configuration file.
 
 ```bash
 # First, stop the Redis server
