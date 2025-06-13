@@ -56,7 +56,7 @@ First of all, please install [Windows Terminal](https://apps.microsoft.com/detai
 This step below is a WSL2 fresh install of WSL2. Open Windows Shell and run as administrator.
 
 ```sh
-wsl --install -d Ubuntu
+wsl --install -d --web-download Ubuntu
 ```
 
 After Ubuntu distro downloaded, you must restart your computer to make it works properly.
